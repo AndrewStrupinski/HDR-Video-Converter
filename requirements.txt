@@ -1,0 +1,7 @@
+# HDR Video Converter - Dependencies
+
+# GUI with drag-and-drop support
+tkinterdnd2>=0.3.0
+
+# Packaging (for building standalone executables)
+pyinstaller>=6.0.0
