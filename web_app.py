@@ -165,6 +165,10 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
             <button onclick="openOutputFolder()">📂 Open Folder</button>
             <button onclick="reset()">🔄 Convert Another</button>
         </div>
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <button onclick="shutdown()" style="background: #333; color: #888; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 12px;">⏹️ Stop Server</button>
+        </div>
     </div>
     
     <script>
@@ -270,6 +274,13 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
         async function openOutputFolder() {
             await fetch('/open-folder');
         }
+        
+        async function shutdown() {
+            if (confirm('Stop the HDR Converter server?')) {
+                await fetch('/shutdown');
+                document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;color:#fff;font-family:sans-serif;"><div style="text-align:center;"><h2>Server Stopped</h2><p style="color:#888;">You can close this tab.</p></div></div>';
+            }
+        }
     </script>
 </body>
 </html>
@@ -308,6 +319,12 @@ class HDRHandler(BaseHTTPRequestHandler):
                     subprocess.run(['explorer', '/select,', output_path])
             self.send_response(200)
             self.end_headers()
+        
+        elif self.path == '/shutdown':
+            self.send_response(200)
+            self.end_headers()
+            print("\n   Shutdown requested. Goodbye!")
+            threading.Thread(target=lambda: os._exit(0), daemon=True).start()
         
         else:
             self.send_response(404)
@@ -442,8 +459,9 @@ def main():
     print(f"   Opening browser at http://localhost:{PORT}")
     print("   Press Ctrl+C to stop.\n")
     
+    # Allow port reuse
+    socketserver.TCPServer.allow_reuse_address = True
     server = socketserver.TCPServer(("", PORT), HDRHandler)
-    server.allow_reuse_address = True
     
     # Open browser
     webbrowser.open(f'http://localhost:{PORT}')
