@@ -205,20 +205,25 @@ class HDRConverter:
         
         self._report_progress(0, "Starting conversion...")
         
-        # Build FFmpeg command
+        # Build FFmpeg command with SDR-to-HDR colorspace conversion
         cmd = [
             self.ffmpeg_path,
             '-y',  # Overwrite output
             '-i', input_path,
+            # Video filter: Convert SDR colorspace to HDR (BT.2020/HLG)
+            '-vf', 'zscale=t=arib-std-b67:m=bt2020nc:p=bt2020:r=tv,format=yuv420p10le',
             '-c:v', 'libx265',
-            '-pix_fmt', 'yuv420p10le',
+            '-b:v', '35M',  # High bitrate for quality HDR
             '-color_primaries', 'bt2020',
             '-colorspace', 'bt2020nc',
             '-color_trc', 'arib-std-b67',
-            '-x265-params', 'hdr-opt=1:repeat-headers=1:colorprim=bt2020:transfer=arib-std-b67:colormatrix=bt2020nc:atc-sei=18:pic-struct=0',
+            '-color_range', 'tv',
+            # x265 HDR settings with mastering display metadata
+            '-x265-params', 'hdr-opt=1:repeat-headers=1:colorprim=bt2020:transfer=arib-std-b67:colormatrix=bt2020nc:master-display=G(13249,34499)B(7500,2999)R(34000,15999)WP(15635,16449)L(10000000,50):max-cll=1000,1000',
             '-tag:v', 'hvc1',
+            '-brand', 'mp42',
             '-c:a', 'aac',
-            '-b:a', '256k',
+            '-b:a', '320k',
             '-progress', 'pipe:1',  # Output progress to stdout
             output_path
         ]
