@@ -155,10 +155,15 @@ class HDRConverter:
         return True, ""
     
     def get_output_path(self, input_path: str) -> str:
-        """Generate output path with _HDR suffix."""
+        """Generate output path in ~/Movies/HDR Converted/ folder."""
         path = Path(input_path)
         output_name = f"{path.stem}_HDR.mp4"
-        return str(path.parent / output_name)
+        
+        # Save to Movies/HDR Converted folder for easy access
+        output_dir = Path.home() / "Movies" / "HDR Converted"
+        output_dir.mkdir(parents=True, exist_ok=True)
+        
+        return str(output_dir / output_name)
     
     def cancel(self):
         """Cancel the current conversion."""
