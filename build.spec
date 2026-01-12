@@ -53,6 +53,13 @@ a = Analysis(
 # Package
 pyz = PYZ(a.pure)
 
+# Determine icon file
+icon_file = None
+if is_macos and Path('icon.icns').exists():
+    icon_file = 'icon.icns'
+elif is_windows and Path('icon.ico').exists():
+    icon_file = 'icon.ico'
+
 # Executable
 exe = EXE(
     pyz,
@@ -73,7 +80,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon='icon.icns' if is_macos else 'icon.ico' if is_windows else None,
+    icon=icon_file,
 )
 
 # macOS App Bundle
