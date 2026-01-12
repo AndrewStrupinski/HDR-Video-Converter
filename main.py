@@ -23,13 +23,18 @@ except ImportError:
     print("  Linux: sudo apt-get install python3-tk")
     sys.exit(1)
 
-# Try to import drag-and-drop support
+# Try to import drag-and-drop support (may crash on some macOS versions)
+HAS_DND = False
 try:
     from tkinterdnd2 import DND_FILES, TkinterDnD
+    # Test if it actually works by creating a test window
+    _test = TkinterDnD.Tk()
+    _test.destroy()
     HAS_DND = True
-except ImportError:
-    HAS_DND = False
-    print("Note: tkinterdnd2 not found. Drag-and-drop disabled. Install with: pip install tkinterdnd2")
+except Exception as e:
+    # tkinterdnd2 not available or incompatible with this macOS version
+    # App will work with file browser instead of drag-and-drop
+    pass
 
 from converter import HDRConverter, ConversionError, SUPPORTED_EXTENSIONS
 

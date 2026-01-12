@@ -215,7 +215,7 @@ class HDRConverter:
             '-color_primaries', 'bt2020',
             '-colorspace', 'bt2020nc',
             '-color_trc', 'arib-std-b67',
-            '-x265-params', 'hdr-opt=1:repeat-headers=1:colorprim=bt2020:transfer=arib-std-b67:colormatrix=bt2020nc',
+            '-x265-params', 'hdr-opt=1:repeat-headers=1:colorprim=bt2020:transfer=arib-std-b67:colormatrix=bt2020nc:atc-sei=18:pic-struct=0',
             '-tag:v', 'hvc1',
             '-c:a', 'aac',
             '-b:a', '256k',
