@@ -123,7 +123,7 @@ class HDRConverterApp:
                  bg=self.COLORS['bg'], fg=self.COLORS['text']).pack()
         
         # Version
-        version = os.environ.get('APP_VERSION', '1.0.3').lstrip('v')
+        version = os.environ.get('APP_VERSION', 'Development').lstrip('v')
         tk.Label(about_window, text=f"Version {version}", font=('SF Pro Text', 12),
                  bg=self.COLORS['bg'], fg=self.COLORS['text_secondary']).pack(pady=(5, 10))
         
@@ -141,10 +141,15 @@ class HDRConverterApp:
         github_label.pack(pady=5)
         github_label.bind('<Button-1>', lambda e: webbrowser.open("https://github.com/AndrewStrupinski/HDR-Video-Converter"))
         
-        # Close button
-        tk.Button(about_window, text="Close", command=about_window.destroy,
+        # Close button - focus=0 removes the weird selection line
+        close_btn = tk.Button(about_window, text="Close", command=about_window.destroy,
                  bg=self.COLORS['accent'], fg=self.COLORS['text'], relief=tk.FLAT,
-                 padx=20, pady=5).pack(pady=15)
+                 activebackground=self.COLORS['accent_hover'], activeforeground=self.COLORS['text'],
+                 padx=20, pady=5, highlightthickness=0, bd=0)
+        close_btn.pack(pady=15)
+        
+        # Remove focus from button on Mac to avoid blue ring
+        close_btn.bind('<FocusIn>', lambda e: about_window.focus_set())
     
     def _center_window(self):
         """Center the window on screen."""
