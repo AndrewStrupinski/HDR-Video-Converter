@@ -1,149 +1,172 @@
-# HDR Video Converter
+<div align="center">
 
-Convert standard videos to HDR/HLG format that displays with the HDR badge on iPhone and Apple devices.
+# 🎬 HDR Video Converter
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
+**Convert any video to HDR/HLG format for iPhone and Apple devices**
 
-## Features
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![macOS](https://img.shields.io/badge/macOS-10.13+-blue.svg)](https://github.com/AndrewStrupinski/HDR-HLG-converter/releases/latest)
+[![Windows](https://img.shields.io/badge/Windows-10+-blue.svg)](https://github.com/AndrewStrupinski/HDR-HLG-converter/releases/latest)
 
-- 🎬 **SDR to HDR Conversion** - Converts standard videos to HDR using the HLG (Hybrid Log-Gamma) format
-- 📱 **iPhone Compatible** - Properly tagged so iPhone shows the HDR badge
-- 🖥️ **Multiple Interfaces** - Web UI, drag-and-drop app, or command line
-- 📂 **Organized Output** - Saves to `~/Movies/HDR Converted/` for easy access
-- ⚡ **High Quality** - 35 Mbps encoding with full HDR metadata
+---
 
-## Quick Start
+### ⬇️ Download
 
-### Option 1: Web Interface (Recommended)
-1. Double-click `Start HDR Converter.command`
-2. Your browser opens automatically
-3. Select a video file and click "Convert to HDR"
-4. Find your converted file in `~/Movies/HDR Converted/`
+| Platform | Download |
+|:--------:|:--------:|
+| **Mac** | [**📥 Download for macOS**](https://github.com/AndrewStrupinski/HDR-HLG-converter/releases/latest/download/HDR-Converter-macOS.dmg) |
+| **Windows** | [**📥 Download for Windows**](https://github.com/AndrewStrupinski/HDR-HLG-converter/releases/latest/download/HDR-Converter-Windows.zip) |
 
-### Option 2: Drag and Drop
-1. Drag any video file onto `Convert to HDR.app`
-2. Wait for conversion to complete
-3. Output folder opens automatically
+*Or [view all releases](https://github.com/AndrewStrupinski/HDR-HLG-converter/releases)*
 
-### Option 3: Command Line
-```bash
-python3.12 convert_hdr.py /path/to/video.mp4
-```
+---
 
-## Requirements
+</div>
 
-- **macOS** 10.13+ or **Windows** 10+
-- **FFmpeg** with libx265 and zscale support
-- **Python** 3.9+ (for running from source)
+## ✨ What It Does
 
-### Installing Dependencies (macOS)
+- Converts regular videos to **HDR/HLG format**
+- Your iPhone will show the **HDR badge** ✓
+- Videos look more vibrant on HDR displays
+- Simple drag-and-drop or web interface
 
-The launcher will attempt to install these automatically, or you can run:
+<div align="center">
 
-```bash
-# Install Homebrew (if not installed)
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+![HDR Badge Example](https://img.shields.io/badge/📱_iPhone_Shows-HDR_Badge-success?style=for-the-badge)
 
-# Install dependencies
-brew install python@3.12 ffmpeg
-```
+</div>
 
-## How It Works
+---
 
-The converter uses FFmpeg's `zscale` filter to properly convert SDR colorspace to HDR:
+## 🚀 Quick Start
 
-- **Color Primaries**: BT.2020 (wide color gamut)
-- **Transfer Function**: ARIB STD-B67 (HLG)
-- **Color Matrix**: BT.2020 non-constant luminance
-- **Mastering Display**: Standard HDR metadata
-- **Content Light Level**: 1000 nits max
+### Mac Users
 
-This produces video files that iPhone and other Apple devices correctly recognize as HDR content.
+1. **Download** the `.dmg` file from the button above
+2. **Open** the DMG and drag the app to Applications
+3. **Right-click** the app → Open (first time only, to bypass Gatekeeper)
+4. **Select a video** and click Convert!
 
-## Output
+### Windows Users
+
+1. **Download** the `.zip` file from the button above
+2. **Extract** the zip file
+3. **Run** `HDR Converter.exe`
+4. **Select a video** and click Convert!
+
+---
+
+## 📍 Where Are My Converted Videos?
 
 Converted files are saved to:
+
 ```
-~/Movies/HDR Converted/
+📁 Movies → HDR Converted
 ```
 
-Files are named with `_HDR` suffix: `MyVideo.mp4` → `MyVideo_HDR.mp4`
+*(On Mac: ~/Movies/HDR Converted)*
 
-## Building from Source
+---
 
-### Prerequisites
+## 🤔 Troubleshooting
+
+<details>
+<summary><b>"App can't be opened" on Mac</b></summary>
+
+Right-click the app → click **Open** → click **Open** again in the dialog.
+This is a one-time thing for apps downloaded from the internet.
+</details>
+
+<details>
+<summary><b>Video doesn't show HDR badge on iPhone</b></summary>
+
+- Make sure you're transferring via **AirDrop** (not iCloud)
+- The video should be at least a few seconds long
+- The HDR badge appears when you play the video
+</details>
+
+<details>
+<summary><b>Conversion is slow</b></summary>
+
+HDR encoding is CPU-intensive. A 1-minute video takes about 15-30 seconds depending on your computer.
+</details>
+
+---
+
+## 💝 Support This Project
+
+If you find this useful, consider supporting development:
+
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Support-yellow?style=for-the-badge&logo=buy-me-a-coffee)](https://buymeacoffee.com/andrewstrupinski)
+[![PayPal](https://img.shields.io/badge/PayPal-Donate-blue?style=for-the-badge&logo=paypal)](https://paypal.me/andrewstrupinski)
+
+---
+
+## 🛠️ For Developers
+
+<details>
+<summary><b>Running from Source</b></summary>
+
+### Requirements
+- Python 3.9+
+- FFmpeg with libx265
+
+### Install
 ```bash
-pip install -r requirements.txt
+# Clone the repo
+git clone https://github.com/AndrewStrupinski/HDR-HLG-converter.git
+cd HDR-HLG-converter
+
+# Install FFmpeg (macOS)
+brew install ffmpeg
+
+# Run the web interface
+python3 web_app.py
 ```
 
-### Create Standalone App (macOS)
+### Command Line
 ```bash
-pyinstaller build.spec
+python3 convert_hdr.py /path/to/video.mp4
 ```
 
-The app will be in `dist/HDR Converter.app`
+</details>
 
-## GitHub Releases
+<details>
+<summary><b>How It Works</b></summary>
 
-Releases are automatically built when you push a version tag:
+The converter uses FFmpeg's `zscale` filter to convert SDR colorspace to HDR:
+
+- **Color Primaries**: BT.2020 (wide color gamut)
+- **Transfer Function**: HLG (Hybrid Log-Gamma)
+- **Mastering Display**: Standard HDR10 metadata
+- **Encoder**: x265 at 35 Mbps
+
+This produces files that Apple devices correctly identify as HDR content.
+</details>
+
+<details>
+<summary><b>Building Releases</b></summary>
+
+Releases are automatically built via GitHub Actions when you push a version tag:
 
 ```bash
 git tag v1.x.x
 git push origin v1.x.x
 ```
 
-This creates:
-- `HDR-Converter-macOS.dmg` - macOS app bundle
-- `HDR-Converter-Windows.zip` - Windows executable
+This creates macOS DMG and Windows ZIP automatically.
+</details>
 
-## Project Structure
+---
 
-```
-HDR-HLG-converter/
-├── converter.py          # Core conversion logic
-├── convert_hdr.py        # CLI tool
-├── web_app.py           # Web interface
-├── main.py              # GUI app (Tkinter)
-├── Start HDR Converter.command  # macOS launcher
-├── Convert to HDR.app   # Drag-and-drop app
-├── build.spec           # PyInstaller config
-├── icon.icns            # macOS app icon
-├── icon.ico             # Windows app icon
-└── .github/workflows/   # GitHub Actions
-```
+## 📄 License
 
-## Supported Formats
+MIT License - Use it however you want!
 
-**Input**: MP4, MOV, MKV, AVI, WebM, M4V, WMV, FLV
+---
 
-**Output**: MP4 (HEVC/H.265, AAC audio)
+<div align="center">
 
-## Troubleshooting
+**Made with ❤️ by [Andrew Strupinski](https://github.com/AndrewStrupinski)**
 
-### "FFmpeg not found"
-Install FFmpeg: `brew install ffmpeg`
-
-### "Python not found"  
-Install Python: `brew install python@3.12`
-
-### Video doesn't show HDR badge on iPhone
-- Make sure you're using AirDrop (not iCloud)
-- The video should be at least a few seconds long
-- Try playing the video - the HDR badge appears during playback
-
-### Port already in use
-Stop the existing server: `lsof -ti:8765 | xargs kill`
-
-## License
-
-MIT License - see [LICENSE](LICENSE) for details.
-
-## Credits
-
-- FFmpeg for video processing
-- x265 for HEVC encoding
-- Apple's HLG specification for HDR format
-
-## Contributing
-
-Pull requests welcome! Please open an issue first to discuss major changes.
+</div>
