@@ -234,40 +234,66 @@ class HDRConverter:
         ]
         
         try:
+            # Windows-specific: Hide console window
+            startupinfo = None
+            creationflags = 0
+            if sys.platform == 'win32':
+                startupinfo = subprocess.STARTUPINFO()
+                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+                startupinfo.wShowWindow = subprocess.SW_HIDE
+                creationflags = subprocess.CREATE_NO_WINDOW
+            
             self._process = subprocess.Popen(
                 cmd,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 universal_newlines=True,
-                bufsize=1
+                bufsize=1,
+                startupinfo=startupinfo,
+                creationflags=creationflags
             )
             
             current_time = 0.0
+            stderr_output = []
+            
+            # Use a thread to read stderr to prevent deadlock on Windows
+            import threading
+            def read_stderr():
+                for line in self._process.stderr:
+                    stderr_output.append(line)
+            
+            stderr_thread = threading.Thread(target=read_stderr, daemon=True)
+            stderr_thread.start()
             
             # Read progress from stdout
-            for line in self._process.stdout:
-                if self._cancelled:
-                    raise ConversionError("Conversion cancelled")
-                
-                line = line.strip()
-                
-                # Parse progress output
-                if line.startswith('out_time='):
-                    time_str = line.split('=')[1]
-                    if time_str and time_str != 'N/A':
-                        current_time = self._parse_time(time_str)
-                        if duration and duration > 0:
-                            percent = (current_time / duration) * 100
-                            self._report_progress(percent, f"Converting... {percent:.1f}%")
-                        else:
-                            self._report_progress(50, f"Converting... {current_time:.1f}s")
-                
-                elif line.startswith('progress='):
-                    if line == 'progress=end':
-                        self._report_progress(100, "Finalizing...")
+            try:
+                for line in self._process.stdout:
+                    if self._cancelled:
+                        raise ConversionError("Conversion cancelled")
+                    
+                    line = line.strip()
+                    
+                    # Parse progress output
+                    if line.startswith('out_time='):
+                        time_str = line.split('=')[1]
+                        if time_str and time_str != 'N/A':
+                            current_time = self._parse_time(time_str)
+                            if duration and duration > 0:
+                                percent = (current_time / duration) * 100
+                                self._report_progress(percent, f"Converting... {percent:.1f}%")
+                            else:
+                                self._report_progress(50, f"Converting... {current_time:.1f}s")
+                    
+                    elif line.startswith('progress='):
+                        if line == 'progress=end':
+                            self._report_progress(100, "Finalizing...")
+            except Exception as e:
+                # If reading fails, try to get stderr
+                pass
             
             # Wait for process to complete
             self._process.wait()
+            stderr_thread.join(timeout=5)
             
             if self._cancelled:
                 # Clean up partial output
@@ -276,7 +302,7 @@ class HDRConverter:
                 raise ConversionError("Conversion cancelled")
             
             if self._process.returncode != 0:
-                stderr = self._process.stderr.read()
+                stderr = ''.join(stderr_output)
                 raise ConversionError(f"FFmpeg error (code {self._process.returncode}):\n{stderr}")
             
             # Verify output exists
