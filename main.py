@@ -79,11 +79,75 @@ class HDRConverterApp:
         
         # Setup UI
         self._setup_styles()
+        self._create_menu()
         self._create_widgets()
         self._setup_drag_drop()
         
         # Center window
         self._center_window()
+    
+    def _create_menu(self):
+        """Create the application menu bar."""
+        import webbrowser
+        
+        menubar = tk.Menu(self.root)
+        self.root.config(menu=menubar)
+        
+        # Help menu
+        help_menu = tk.Menu(menubar, tearoff=0)
+        menubar.add_cascade(label="Help", menu=help_menu)
+        help_menu.add_command(label="GitHub Repository", command=lambda: webbrowser.open("https://github.com/AndrewStrupinski/HDR-Video-Converter"))
+        help_menu.add_separator()
+        help_menu.add_command(label="About HDR Converter", command=self._show_about)
+    
+    def _show_about(self):
+        """Show the About dialog."""
+        import webbrowser
+        
+        about_window = tk.Toplevel(self.root)
+        about_window.title("About HDR Converter")
+        about_window.geometry("400x280")
+        about_window.resizable(False, False)
+        about_window.configure(bg=self.COLORS['bg'])
+        about_window.transient(self.root)
+        about_window.grab_set()
+        
+        # Center on parent
+        about_window.update_idletasks()
+        x = self.root.winfo_x() + (self.root.winfo_width() // 2) - 200
+        y = self.root.winfo_y() + (self.root.winfo_height() // 2) - 140
+        about_window.geometry(f"+{x}+{y}")
+        
+        # App icon
+        tk.Label(about_window, text="🎬", font=('', 48), bg=self.COLORS['bg']).pack(pady=(20, 10))
+        
+        # App name
+        tk.Label(about_window, text="HDR Video Converter", font=('SF Pro Display', 18, 'bold'),
+                 bg=self.COLORS['bg'], fg=self.COLORS['text']).pack()
+        
+        # Version
+        version = os.environ.get('APP_VERSION', '1.0.3').lstrip('v')
+        tk.Label(about_window, text=f"Version {version}", font=('SF Pro Text', 12),
+                 bg=self.COLORS['bg'], fg=self.COLORS['text_secondary']).pack(pady=(5, 10))
+        
+        # Description
+        tk.Label(about_window, text="Convert videos to HDR/HLG format for iPhone",
+                 font=('SF Pro Text', 11), bg=self.COLORS['bg'], fg=self.COLORS['text']).pack()
+        
+        # Copyright
+        tk.Label(about_window, text="© 2026 Andrew Strupinski. MIT License.",
+                 font=('SF Pro Text', 10), bg=self.COLORS['bg'], fg=self.COLORS['text_secondary']).pack(pady=(10, 5))
+        
+        # GitHub link
+        github_label = tk.Label(about_window, text="GitHub Repository", font=('SF Pro Text', 11, 'underline'),
+                               bg=self.COLORS['bg'], fg='#4da6ff', cursor='hand2')
+        github_label.pack(pady=5)
+        github_label.bind('<Button-1>', lambda e: webbrowser.open("https://github.com/AndrewStrupinski/HDR-Video-Converter"))
+        
+        # Close button
+        tk.Button(about_window, text="Close", command=about_window.destroy,
+                 bg=self.COLORS['accent'], fg=self.COLORS['text'], relief=tk.FLAT,
+                 padx=20, pady=5).pack(pady=15)
     
     def _center_window(self):
         """Center the window on screen."""
@@ -183,9 +247,15 @@ class HDRConverterApp:
         self.output_frame = tk.Frame(self.main_frame, bg=self.COLORS['bg'])
         self.output_frame.pack(fill=tk.X, pady=(5, 10))
         
+        # Show correct default folder based on platform
+        if sys.platform == 'win32':
+            default_output = "~/Videos/HDR Converted"
+        else:
+            default_output = "~/Movies/HDR Converted"
+        
         self.output_label = tk.Label(
             self.output_frame,
-            text="📂 Output: Same as input",
+            text=f"📂 Output: {default_output}",
             font=('SF Pro Text', 11),
             bg=self.COLORS['bg'],
             fg=self.COLORS['text_secondary'],
@@ -226,6 +296,22 @@ class HDRConverterApp:
         # Button frame
         self.button_frame = tk.Frame(self.main_frame, bg=self.COLORS['bg'])
         self.button_frame.pack(fill=tk.X, pady=10)
+        
+        # Convert button (hidden initially, shown after file selection)
+        self.convert_btn = tk.Button(
+            self.button_frame,
+            text="🎬 Convert to HDR",
+            font=('SF Pro Text', 14, 'bold'),
+            bg=self.COLORS['success'],
+            fg='white',
+            activebackground='#00b85c',
+            activeforeground='white',
+            relief=tk.FLAT,
+            cursor='hand2',
+            padx=20,
+            pady=8,
+            command=self._start_conversion
+        )
         
         # Open folder button (hidden initially)
         self.open_folder_btn = tk.Button(

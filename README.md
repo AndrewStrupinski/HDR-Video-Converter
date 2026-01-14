@@ -52,7 +52,9 @@
 1. **Download** the `.zip` file from the button above
 2. **Extract** the zip file
 3. **Run** `HDR Converter.exe`
-4. **Select a video** and click Convert!
+4. **Select a video** and conversion starts automatically!
+
+> **Note:** A terminal window may briefly appear during conversion - this is normal.
 
 ---
 
@@ -60,11 +62,12 @@
 
 Converted files are saved to:
 
-```
-📁 Movies → HDR Converted
-```
+| Platform | Location |
+|----------|----------|
+| **Mac** | `~/Movies/HDR Converted/` |
+| **Windows** | `~/Videos/HDR Converted/` |
 
-*(On Mac: ~/Movies/HDR Converted)*
+You can also click "Change" in the app to choose a custom output folder.
 
 ---
 
