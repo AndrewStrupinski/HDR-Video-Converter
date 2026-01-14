@@ -294,22 +294,6 @@ class HDRConverterApp:
         self.button_frame = tk.Frame(self.main_frame, bg=self.COLORS['bg'])
         self.button_frame.pack(fill=tk.X, pady=10)
         
-        # Convert button (hidden initially, shown after file selection)
-        self.convert_btn = tk.Button(
-            self.button_frame,
-            text="🎬 Convert to HDR",
-            font=('SF Pro Text', 14, 'bold'),
-            bg=self.COLORS['success'],
-            fg='white',
-            activebackground='#00b85c',
-            activeforeground='white',
-            relief=tk.FLAT,
-            cursor='hand2',
-            padx=20,
-            pady=8,
-            command=self._start_conversion
-        )
-        
         # Open folder button (hidden initially)
         self.open_folder_btn = tk.Button(
             self.button_frame,
