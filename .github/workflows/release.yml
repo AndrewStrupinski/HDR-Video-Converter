@@ -70,9 +70,28 @@ jobs:
       
       - name: Create DMG
         run: |
-          mkdir -p dist/dmg
-          cp -r "dist/HDR Converter.app" dist/dmg/
-          hdiutil create -volname "HDR Converter" -srcfolder dist/dmg -ov -format UDZO "dist/HDR-Converter-macOS.dmg"
+          # Install create-dmg for prettier DMG
+          brew install create-dmg
+          
+          # Create DMG with Applications symlink and nice layout
+          create-dmg \
+            --volname "HDR Converter" \
+            --volicon "icon.icns" \
+            --window-pos 200 120 \
+            --window-size 600 400 \
+            --icon-size 100 \
+            --icon "HDR Converter.app" 150 185 \
+            --hide-extension "HDR Converter.app" \
+            --app-drop-link 450 185 \
+            "dist/HDR-Converter-macOS.dmg" \
+            "dist/HDR Converter.app" \
+          || {
+            # Fallback to simple DMG if create-dmg fails
+            mkdir -p dist/dmg
+            cp -r "dist/HDR Converter.app" dist/dmg/
+            ln -s /Applications dist/dmg/Applications
+            hdiutil create -volname "HDR Converter" -srcfolder dist/dmg -ov -format UDZO "dist/HDR-Converter-macOS.dmg"
+          }
       
       - name: Upload macOS Release
         uses: actions/upload-release-asset@v1
