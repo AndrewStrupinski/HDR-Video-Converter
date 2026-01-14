@@ -165,6 +165,14 @@ MIT License - Use it however you want!
 
 ---
 
+## 🙏 Credits
+
+- [FFmpeg](https://ffmpeg.org/) for video processing
+- [x265](https://x265.org/) for HEVC encoding  
+- [Claude AI](https://anthropic.com/) for development assistance
+
+---
+
 <div align="center">
 
 **Made with ❤️ by [Andrew Strupinski](https://github.com/AndrewStrupinski)**
