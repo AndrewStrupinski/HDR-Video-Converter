@@ -5,8 +5,8 @@
 **Convert any video to HDR/HLG format for iPhone and Apple devices**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![macOS](https://img.shields.io/badge/macOS-10.13+-blue.svg)](https://github.com/AndrewStrupinski/HDR-HLG-converter/releases/latest)
-[![Windows](https://img.shields.io/badge/Windows-10+-blue.svg)](https://github.com/AndrewStrupinski/HDR-HLG-converter/releases/latest)
+[![macOS](https://img.shields.io/badge/macOS-10.13+-blue.svg)](https://github.com/AndrewStrupinski/HDR-Video-Converter/releases/latest)
+[![Windows](https://img.shields.io/badge/Windows-10+-blue.svg)](https://github.com/AndrewStrupinski/HDR-Video-Converter/releases/latest)
 
 ---
 
@@ -14,10 +14,10 @@
 
 | Platform | Download |
 |:--------:|:--------:|
-| **Mac** | [**📥 Download for macOS**](https://github.com/AndrewStrupinski/HDR-HLG-converter/releases/latest/download/HDR-Converter-macOS.dmg) |
-| **Windows** | [**📥 Download for Windows**](https://github.com/AndrewStrupinski/HDR-HLG-converter/releases/latest/download/HDR-Converter-Windows.zip) |
+| **Mac** | [**📥 Download for macOS**](https://github.com/AndrewStrupinski/HDR-Video-Converter/releases/latest/download/HDR-Converter-macOS.dmg) |
+| **Windows** | [**📥 Download for Windows**](https://github.com/AndrewStrupinski/HDR-Video-Converter/releases/latest/download/HDR-Converter-Windows.zip) |
 
-*Or [view all releases](https://github.com/AndrewStrupinski/HDR-HLG-converter/releases)*
+*Or [view all releases](https://github.com/AndrewStrupinski/HDR-Video-Converter/releases)*
 
 ---
 
@@ -114,8 +114,8 @@ If you find this useful, consider supporting development:
 ### Install
 ```bash
 # Clone the repo
-git clone https://github.com/AndrewStrupinski/HDR-HLG-converter.git
-cd HDR-HLG-converter
+git clone https://github.com/AndrewStrupinski/HDR-Video-Converter.git
+cd HDR-Video-Converter
 
 # Install FFmpeg (macOS)
 brew install ffmpeg
