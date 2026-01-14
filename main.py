@@ -27,9 +27,6 @@ except ImportError:
 HAS_DND = False
 try:
     from tkinterdnd2 import DND_FILES, TkinterDnD
-    # Test if it actually works by creating a test window
-    _test = TkinterDnD.Tk()
-    _test.destroy()
     HAS_DND = True
 except Exception as e:
     # tkinterdnd2 not available or incompatible with this macOS version
