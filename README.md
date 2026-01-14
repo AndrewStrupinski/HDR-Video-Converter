@@ -47,6 +47,8 @@
 3. **Right-click** the app → Open (first time only, to bypass Gatekeeper)
 4. **Select a video** and click Convert!
 
+> ⚠️ **Security Warning:** Since this app isn't signed with an Apple Developer certificate, macOS will show a warning. Right-click → Open, then click "Open" in the dialog. You only need to do this once.
+
 ### Windows Users
 
 1. **Download** the `.zip` file from the button above
@@ -54,6 +56,8 @@
 3. **Run** `HDR Converter.exe`
 4. **Select a video** and conversion starts automatically!
 
+> ⚠️ **Security Warning:** Windows SmartScreen may show "Windows protected your PC". Click **"More info"** → **"Run anyway"**. This happens because the app isn't signed with a certificate.
+>
 > **Note:** A terminal window may briefly appear during conversion - this is normal.
 
 ---
