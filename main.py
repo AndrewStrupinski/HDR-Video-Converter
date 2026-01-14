@@ -82,6 +82,58 @@ class HDRConverterApp:
         
         # Center window
         self._center_window()
+        
+        # Check for updates
+        self._start_update_check()
+    
+    def _start_update_check(self):
+        """Start background update check."""
+        thread = threading.Thread(target=self._check_for_updates, daemon=True)
+        thread.start()
+    
+    def _check_for_updates(self):
+        """Check GitHub for new releases."""
+        try:
+            import requests
+            response = requests.get(
+                "https://api.github.com/repos/AndrewStrupinski/HDR-Video-Converter/releases/latest",
+                timeout=5
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                latest_tag = data['tag_name']
+                latest_version = latest_tag.lstrip('v')
+                current_version = os.environ.get('APP_VERSION', 'Development').lstrip('v')
+                
+                # Check if newer (simple string comparison works for v1.0.X)
+                # Ideally semver, but this is sufficient for now
+                if current_version != 'Development' and latest_version > current_version:
+                    self.root.after(0, lambda: self._show_update_banner(latest_tag, data['html_url']))
+                    
+        except Exception:
+            # Silently fail on network errors
+            pass
+            
+    def _show_update_banner(self, version: str, url: str):
+        """Show update available banner."""
+        import webbrowser
+        
+        banner = tk.Frame(self.main_frame, bg='#2ecc71', cursor='hand2')
+        banner.pack(fill=tk.X, before=self.drop_frame, pady=(0, 10))
+        
+        label = tk.Label(
+            banner,
+            text=f"✨ New version {version} available! Click to download.",
+            font=('SF Pro Text', 11, 'bold'),
+            bg='#2ecc71',
+            fg='white'
+        )
+        label.pack(pady=5)
+        
+        # Make clickable
+        for widget in [banner, label]:
+            widget.bind('<Button-1>', lambda e: webbrowser.open(url))
     
     def _create_menu(self):
         """Create the application menu bar."""
